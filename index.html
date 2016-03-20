@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <title>tomato timer</title>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="icon-192x192.png"/>
+    <link href="tomato.css" rel="stylesheet" media="all"/>
+    <link href="main.css" rel="stylesheet" media="all"/>
+    <script src="tomato.js"></script>
+</head>
+
+<body>
+<div id="tomato"></div>
+<div>
+    <button onclick="set25min()">25 минут</button>
+    <button onclick="set5min()">5 минут</button>
+    <button onclick="set15min()">15 минут</button>
+</div>
+<script>
+    function set25min() {
+        tomato.setTimer('00:25', 'red', function () {
+            notifyMe('25 минут прошло');
+            set5min();
+            //tomato.startTimer();
+        });
+    }
+
+    function set5min() {
+        tomato.setTimer('00:05', 'green', function () {
+            notifyMe('5 минут прошло');
+            set25min();
+        });
+    }
+
+    function set15min() {
+        tomato.setTimer('00:15', 'green', function () {
+            notifyMe('15 минут прошло');
+            set25min();
+        });
+    }
+
+    function notifyMe(text) {
+        Notification.requestPermission(function (result) {
+            if (result === 'granted') {
+                var tomatoNotification = new Notification("ПОМИДОРКА", {
+                    tag: "tomato",
+                    body: text,
+                    icon: "icon-192x192.png"
+                });
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        tomato.init('#tomato');
+        set25min();
+    });
+</script>
+</body>
+</html>

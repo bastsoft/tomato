@@ -1,0 +1,73 @@
+.tomato {
+    display: inline-block;
+    overflow: hidden;
+    width: 400px;
+    height: 400px;
+}
+
+.tomato-pie {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(to right, transparent 50%, currentColor 0) #f06;
+    border-radius: 50%;
+    color: gold;
+}
+
+.tomato__type_green.tomato-pie {
+    background: linear-gradient(to right, transparent 50%, currentColor 0) green;
+    color: gold;
+}
+
+@keyframes color {
+    50% {
+        background-color: inherit;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(.5turn);
+    }
+}
+
+.tomato-pie::before {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 50%;
+    border-radius: 0 100% 100% 0 / 50%;
+    margin-left: 50%;
+    transform-origin: left;
+    animation: 50s spin linear 2 forwards,
+    color 100s step-start;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+    animation-delay: inherit;
+    background-color: currentColor;
+}
+
+.tomato-dial {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    width: 370px;
+    height: 370px;
+    position: relative;
+    top: -385px;
+    left: 15px;
+    background-color: #f06;
+    color: white;
+    border-radius: 50%;
+}
+
+.tomato__type_green .tomato-dial {
+    background-color: green;
+}
+
+.tomato-dial__time {
+    font-family: sans-serif;
+    font-size: 120px;
+    cursor: pointer;
+    user-select: none;
+}
