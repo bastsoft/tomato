@@ -8,3 +8,14 @@ button {
     border: solid 1px #73C8F0;
     cursor: pointer;
 }
+
+body {
+    overflow-x: hidden;
+    margin: 0;
+}
+
+@media (min-width: 1px) and (max-width: 400px) {
+    body {
+        width: 400px;
+    }
+}

@@ -3,6 +3,8 @@
 <head>
     <title>tomato timer</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=400">
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="icon-192x192.png"/>
     <link href="tomato.css" rel="stylesheet" media="all"/>
     <link href="main.css" rel="stylesheet" media="all"/>
@@ -17,6 +19,26 @@
     <button onclick="set15min()">15 минут</button>
 </div>
 <script>
+
+    (function () {
+        var isLocalhost = !!(window.location.hostname === 'localhost' ||
+        window.location.hostname === '[::1]' ||
+        window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));
+
+        if (window.location.protocol !== "https:" && !isLocalhost) {
+            window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js', {scope: './'})
+                    .then(function (registration) {
+                        console.log('success', registration.scope);
+                    }).catch(function (err) {
+                console.log('failure: ', err);
+            });
+        }
+    }());
+
     function set25min() {
         tomato.setTimer('00:25', 'red', function () {
             notifyMe('25 минут прошло');
@@ -33,7 +55,7 @@
     }
 
     function set15min() {
-        tomato.setTimer('00:15', 'green', function () {
+        tomato.setTimer('15:00', 'green', function () {
             notifyMe('15 минут прошло');
             set25min();
         });
@@ -42,10 +64,13 @@
     function notifyMe(text) {
         Notification.requestPermission(function (result) {
             if (result === 'granted') {
-                var tomatoNotification = new Notification("ПОМИДОРКА", {
-                    tag: "tomato",
-                    body: text,
-                    icon: "icon-192x192.png"
+                navigator.serviceWorker.ready.then(function (registration) {
+                    registration.showNotification('ПОМИДОРКА', {
+                        tag: "tomato",
+                        body: text,
+                        icon: "icon-192x192.png",
+                        requireInteraction: false
+                    });
                 });
             }
         });
